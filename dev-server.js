@@ -5,14 +5,19 @@ var pkg = require('./package.json');
 var port = pkg.config.devPort;
 var host = pkg.config.devHost;
 
+var config = require('./entry.js');
 var server = new WebpackDevServer(
-    webpack(config),
-    config.devServer
+    webpack(config), {
+        contentBase: './build.js',
+        hot: true,
+        noInfo: true,
+        inline: true,
+        stats: { colors: true },
+        historyApiFallback: true
+    }
 );
 
 server.listen(port, host, function (err) {
     if (err) { console.log(err); }
-    var url = util.format('http://%s:%d', host, port);
-    console.log('Listening at %s', url);
     // opn(url);
 });
